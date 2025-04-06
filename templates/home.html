@@ -1,0 +1,338 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Início - Sistema de Contratos{% endblock %}
+
+{% block content %}
+<!-- Header com título e botão principal -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="fw-semibold mb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+            <path d="M20 7h-9"></path>
+            <path d="M14 17H5"></path>
+            <circle cx="17" cy="17" r="3"></circle>
+            <circle cx="7" cy="7" r="3"></circle>
+        </svg>
+        Painel de Contratos
+    </h4>
+    <a href="{% url 'selecionar_tipo_contrato' %}" class="btn btn-primary px-3 py-2">
+        <i class="bi bi-plus-lg me-2"></i>Novo Contrato
+    </a>
+</div>
+
+<!-- Resumo estatístico -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle p-3 me-3" style="background-color: rgba(79, 70, 229, 0.1);">
+                    <i class="bi bi-file-earmark-text fs-4" style="color: var(--primary-color);"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Total de Contratos</h6>
+                    <h4 class="card-title mb-0 fw-semibold">{{ contratos|length }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle p-3 me-3" style="background-color: rgba(16, 185, 129, 0.1);">
+                    <i class="bi bi-house fs-4" style="color: var(--success-color);"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Contratos de Locação</h6>
+                    <h4 class="card-title mb-0 fw-semibold">{{ contratos|length }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center">
+                <div class="rounded-circle p-3 me-3" style="background-color: rgba(59, 130, 246, 0.1);">
+                    <i class="bi bi-calendar fs-4" style="color: #3B82F6;"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1">Último Contrato</h6>
+                    {% if contratos %}
+                        <h4 class="card-title mb-0 fw-semibold">{{ contratos.first.data_criacao|date:"d/m/Y" }}</h4>
+                    {% else %}
+                        <p class="card-text mb-0">Nenhum contrato</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de ações -->
+<div class="card mb-4">
+    <div class="card-body p-3">
+        <div class="row g-2 align-items-center">
+            <div class="col-md-7">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" class="form-control" id="searchInput" placeholder="Buscar por nome, endereço ou tipo..." onkeyup="filterTable()">
+                </div>
+            </div>
+            <div class="col-md-5 text-md-end">
+                <div class="btn-group" role="group">
+                    <a href="{% url 'home' %}" class="btn btn-sm {% if not request.GET.tipo %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                        <i class="bi bi-grid me-1"></i>Todos
+                    </a>
+                    <a href="?tipo=1" class="btn btn-sm {% if request.GET.tipo == '1' %}btn-primary{% else %}btn-outline-primary{% endif %}">
+                        <i class="bi bi-house-door me-1"></i>Locação
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if contratos %}
+    <!-- Lista de contratos -->
+    <div class="card mb-4">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0" id="contractsTable">
+                <thead>
+                    <tr>
+                        <th scope="col" class="fw-semibold py-3 ps-4">Contrato</th>
+                        <th scope="col" class="fw-semibold py-3">Detalhes</th>
+                        <th scope="col" class="fw-semibold py-3 d-none d-md-table-cell">Data</th>
+                        <th scope="col" class="fw-semibold py-3 text-end pe-4">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contrato in contratos %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-3">
+                                        {% if contrato.tipo.id == 1 %}
+                                            <span class="badge rounded-pill p-2" style="background-color: rgba(79, 70, 229, 0.1); color: var(--primary-color);">
+                                                <i class="bi bi-house"></i>
+                                            </span>
+                                        {% else %}
+                                            <span class="badge rounded-pill p-2" style="background-color: rgba(107, 114, 128, 0.1); color: var(--secondary-color);">
+                                                <i class="bi bi-file-text"></i>
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        <p class="fw-medium mb-0">#{{ contrato.id }} - {{ contrato.tipo.nome }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                {% if contrato.contrato_locacao %}
+                                    <p class="mb-0 fw-medium">{{ contrato.contrato_locacao.nome_locatario }}</p>
+                                    <small class="text-muted">
+                                        {{ contrato.contrato_locacao.logradouro }}, {{ contrato.contrato_locacao.numero }} - {{ contrato.contrato_locacao.bairro }}
+                                    </small>
+                                {% else %}
+                                    <span class="badge" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning-color);">Incompleto</span>
+                                {% endif %}
+                            </td>
+                            <td class="d-none d-md-table-cell">
+                                <p class="mb-0">{{ contrato.data_criacao|date:"d/m/Y" }}</p>
+                                <small class="text-muted">{{ contrato.data_criacao|time:"H:i" }}</small>
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group">
+                                    <a href="{% url 'visualizar_contrato' contrato.id %}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Visualizar">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'editar_contrato' contrato.id %}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Editar">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'gerar_pdf' contrato.id %}" class="btn btn-sm btn-outline-secondary" data-bs-toggle="tooltip" title="Gerar PDF">
+                                        <i class="bi bi-file-pdf"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <!-- Estado vazio -->
+    <div class="card text-center p-5 mb-4">
+        <div class="py-5">
+            <div class="mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#E5E7EB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
+            </div>
+            <h4 class="mb-3 fw-semibold">Nenhum contrato encontrado</h4>
+            <p class="text-muted mb-4">Comece a gerenciar seus contratos criando seu primeiro documento.</p>
+            <a href="{% url 'selecionar_tipo_contrato' %}" class="btn btn-primary px-4 py-2">
+                <i class="bi bi-plus-lg me-2"></i>Criar Primeiro Contrato
+            </a>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Ações rápidas -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0 fw-semibold">Ações Rápidas</h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <a href="{% url 'selecionar_tipo_contrato' %}" class="text-decoration-none">
+                    <div class="card h-100" style="background-color: var(--light-bg); border: none;">
+                        <div class="card-body text-center p-4">
+                            <div class="mb-3">
+                                <i class="bi bi-plus-circle fs-2" style="color: var(--primary-color);"></i>
+                            </div>
+                            <h6 class="card-title mb-1 fw-semibold">Novo Contrato</h6>
+                            <p class="card-text small text-muted">Criar um novo contrato a partir do modelo</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100" style="background-color: var(--light-bg); border: none;">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="bi bi-file-pdf fs-2" style="color: var(--danger-color);"></i>
+                        </div>
+                        <h6 class="card-title mb-1 fw-semibold">Exportar PDF</h6>
+                        <p class="card-text small text-muted">Exporte contratos para PDF</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100" style="background-color: var(--light-bg); border: none; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#helpModal">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="bi bi-question-circle fs-2" style="color: #3B82F6;"></i>
+                        </div>
+                        <h6 class="card-title mb-1 fw-semibold">Ajuda</h6>
+                        <p class="card-text small text-muted">Aprenda a usar o sistema</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Ajuda -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-semibold">
+                    <i class="bi bi-info-circle me-2" style="color: #3B82F6;"></i>Guia de Uso
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="accordion" id="helpAccordion">
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                                Como criar um novo contrato?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#helpAccordion">
+                            <div class="accordion-body bg-light">
+                                <ol class="mb-0">
+                                    <li class="mb-2">Clique no botão <strong>"Novo Contrato"</strong> na página inicial</li>
+                                    <li class="mb-2">Selecione o tipo de contrato que deseja criar</li>
+                                    <li class="mb-2">Preencha todos os campos do formulário com as informações necessárias</li>
+                                    <li>Clique em <strong>"Criar Contrato"</strong> para finalizar</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item mb-3">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                                Como gerar um PDF do contrato?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                            <div class="accordion-body bg-light">
+                                <p>Para gerar um PDF do seu contrato:</p>
+                                <ol class="mb-0">
+                                    <li class="mb-2">Localize o contrato na lista de contratos</li>
+                                    <li class="mb-2">Clique no ícone <i class="bi bi-file-pdf" style="color: var(--danger-color);"></i> na coluna de ações</li>
+                                    <li>O download do arquivo PDF será iniciado automaticamente</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button fw-medium collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">
+                                Como editar um contrato existente?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
+                            <div class="accordion-body bg-light">
+                                <ol class="mb-0">
+                                    <li class="mb-2">Encontre o contrato na lista principal</li>
+                                    <li class="mb-2">Clique no ícone <i class="bi bi-pencil"></i> na coluna de ações</li>
+                                    <li class="mb-2">Faça as alterações necessárias no formulário</li>
+                                    <li>Clique em <strong>"Salvar Alterações"</strong> para finalizar</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Inicializar tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl, {
+                placement: 'top',
+                delay: { show: 300, hide: 100 }
+            });
+        });
+    });
+    
+    // Função para filtrar a tabela
+    function filterTable() {
+        var input = document.getElementById("searchInput");
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById("contractsTable");
+        var tr = table.getElementsByTagName("tr");
+        
+        for (var i = 1; i < tr.length; i++) {
+            var td1 = tr[i].getElementsByTagName("td")[0];
+            var td2 = tr[i].getElementsByTagName("td")[1];
+            
+            if (td1 && td2) {
+                var txtValue1 = td1.textContent || td1.innerText;
+                var txtValue2 = td2.textContent || td2.innerText;
+                
+                if (txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+{% endblock %}
+{% endblock %}

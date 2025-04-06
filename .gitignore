@@ -1,0 +1,108 @@
+# Django Project Gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Static and Media Files
+/static/
+/media/
+staticfiles/
+
+# Django Migrations (optional - depends on project strategy)
+# Uncomment if you don't want to track migrations
+# **/migrations/**
+# !**/migrations/__init__.py
+
+# Bootstrap and Frontend Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# IDE and Editor Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Environment Variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+*.log
+pip-log.txt
+django-debug.log
+
+# Coverage and Testing
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# Compiled Python
+*.pyc
+*.pyo
+*.pyd
+
+# Build and Distribution
+build/
+dist/
+*.egg-info/
+
+# Security
+*.key
+secrets.json
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Redis
+*.rdb
+
+# Docker
+.dockerignore
+Dockerfile
+
+# Misc
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Backup files
+*.bak
+*.gho
+*.ori
+*.orig
+*.tmp
+
+# Frontend Build Outputs
+/frontend/build/
+/frontend/dist/
+
+# Specific to Django
+local_settings.py

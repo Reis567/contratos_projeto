@@ -1,0 +1,246 @@
+{% extends 'contratos/visualizar_contrato_base.html' %}
+
+{% block title %}Visualizar Contrato de Locação{% endblock %}
+
+{% block contrato_content %}
+<div class="mb-4">
+    <div class="text-center mb-4">
+        <h3>INSTRUMENTO PARTICULAR DE CONTRATO DE LOCAÇÃO DE IMÓVEL RESIDENCIAL</h3>
+        <p class="mb-0 mt-3">
+            <strong>CONTRATO DE LOCAÇÃO DO IMÓVEL {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %}</strong>
+        </p>
+        <p class="mb-0">
+            <strong>(LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}</strong>
+        </p>
+    </div>
+
+    <p class="mb-4">
+        Que fazem entre si, de um lado, doravante denominada <strong>Locadora</strong>, {{ contrato_locacao.nome_locador }}, {{ contrato_locacao.nacionalidade_locador }}, {{ contrato_locacao.estado_civil_locador }}, {{ contrato_locacao.profissao_locador }}, portadora da cédula de identidade de n.° {{ contrato_locacao.rg_locador }} e inscrita no CPF sob o n.° {{ contrato_locacao.cpf_locador }}, residente e domiciliada {{ contrato_locacao.endereco_locador }}. 
+        Do outro lado, doravante denominado <strong>Locatário</strong>, {{ contrato_locacao.nome_locatario }}, {{ contrato_locacao.nacionalidade_locatario }}, portador da carteira de identidade nº {{ contrato_locacao.rg_locatario }}, CPF nº {{ contrato_locacao.cpf_locatario }}, residente e domiciliado no endereço do imóvel objeto deste contrato, têm justo e acordado o que se segue:
+    </p>
+
+    <div class="accordion mb-4" id="accordionContrato">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingPartes">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePartes" aria-expanded="true">
+                    <i class="bi bi-people me-2"></i>Partes e Imóvel
+                </button>
+            </h2>
+            <div id="collapsePartes" class="accordion-collapse collapse show" aria-labelledby="headingPartes" data-bs-parent="#accordionContrato">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="bi bi-person-circle me-2"></i>Locador(a)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Nome:</strong> {{ contrato_locacao.nome_locador }}</p>
+                                    <p><strong>Nacionalidade:</strong> {{ contrato_locacao.nacionalidade_locador }}</p>
+                                    <p><strong>Estado Civil:</strong> {{ contrato_locacao.estado_civil_locador }}</p>
+                                    <p><strong>Profissão:</strong> {{ contrato_locacao.profissao_locador }}</p>
+                                    <p><strong>RG:</strong> {{ contrato_locacao.rg_locador }}</p>
+                                    <p><strong>CPF:</strong> {{ contrato_locacao.cpf_locador }}</p>
+                                    <p><strong>Endereço:</strong> {{ contrato_locacao.endereco_locador }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0"><i class="bi bi-person me-2"></i>Locatário(a)</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Nome:</strong> {{ contrato_locacao.nome_locatario }}</p>
+                                    <p><strong>Nacionalidade:</strong> {{ contrato_locacao.nacionalidade_locatario }}</p>
+                                    <p><strong>RG:</strong> {{ contrato_locacao.rg_locatario }}</p>
+                                    <p><strong>CPF:</strong> {{ contrato_locacao.cpf_locatario }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0"><i class="bi bi-house-door me-2"></i>Imóvel</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Endereço:</strong> {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}</p>
+                                    <p><strong>Complemento:</strong> {{ contrato_locacao.complemento|default:"-" }}</p>
+                                    <p><strong>Lote/Quadra/Casa:</strong> Lote {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, Quadra {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, Casa {{ contrato_locacao.casa }}{% endif %}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Bairro:</strong> {{ contrato_locacao.bairro }}</p>
+                                    <p><strong>Cidade/UF:</strong> {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }}</p>
+                                    <p><strong>CEP:</strong> {{ contrato_locacao.cep }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingCondicoes">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCondicoes">
+                    <i class="bi bi-cash-coin me-2"></i>Condições do Contrato
+                </button>
+            </h2>
+            <div id="collapseCondicoes" class="accordion-collapse collapse" aria-labelledby="headingCondicoes" data-bs-parent="#accordionContrato">
+                <div class="accordion-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Prazos e Valores</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Valor do Aluguel:</strong> R$ {{ contrato_locacao.valor_aluguel }} ({{ contrato_locacao.valor_aluguel_extenso }})</p>
+                                    <p><strong>Data de Início:</strong> {{ contrato_locacao.data_inicio|date:"d/m/Y" }}</p>
+                                    <p><strong>Data de Término:</strong> {{ contrato_locacao.data_fim|date:"d/m/Y" }}</p>
+                                    <p><strong>Dia de Pagamento:</strong> {{ contrato_locacao.dia_pagamento }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">Outras Condições</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Reajuste:</strong> Anual, conforme lei vigente</p>
+                                    <p><strong>Multa por Atraso:</strong> 10% + juros de 1% ao mês</p>
+                                    <p><strong>Rescisão Antecipada:</strong> Multa de 2 meses de aluguel</p>
+                                    <p><strong>Destinação:</strong> Uso exclusivamente residencial</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingClausulas">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseClausulas">
+                    <i class="bi bi-list-check me-2"></i>Cláusulas do Contrato
+                </button>
+            </h2>
+            <div id="collapseClausulas" class="accordion-collapse collapse" aria-labelledby="headingClausulas" data-bs-parent="#accordionContrato">
+                <div class="accordion-body">
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Primeira:</h6>
+                        <p>Que a Locadora é legítima proprietária do imóvel situado na {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %} (LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Segunda:</h6>
+                        <p>Que a Locadora aluga o referido imóvel pelo prazo de 12 meses, iniciando em {{ contrato_locacao.data_inicio|date:"d/m/Y" }} e terminando em {{ contrato_locacao.data_fim|date:"d/m/Y" }}, podendo ser prorrogado pelo mesmo período havendo concordância entre as partes.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Terceira:</h6>
+                        <p>Que a Locadora aluga o imóvel ao Locatário pelo preço certo e ajustado de R$ {{ contrato_locacao.valor_aluguel }} ({{ contrato_locacao.valor_aluguel_extenso }}), a começar a ser pago no dia {{ contrato_locacao.dia_pagamento }} de {{ contrato_locacao.data_primeiro_pagamento|date:"F" }} de {{ contrato_locacao.data_primeiro_pagamento|date:"Y" }}, sendo os meses subsequentes a serem pagos também no dia {{ contrato_locacao.dia_pagamento }} de cada mês.</p>
+                        
+                        <p><strong>Parágrafo Primeiro:</strong> Que o reajuste será anual, de acordo com os índices da Lei em vigência.</p>
+                        
+                        <p><strong>Parágrafo Segundo:</strong> Fica acertado entre as partes, que o Locatário tomou posse do objeto no dia {{ contrato_locacao.data_inicio|date:"d/m/Y" }}.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Quarta:</h6>
+                        <p>Fica acertado entre as partes que o pagamento do aluguel será feito diretamente na conta bancária da Locadora ou a conta que ela indicar.</p>
+                        
+                        <p><strong>Parágrafo único:</strong> Em caso de mora no pagamento do aluguel, o valor será corrigido pelo IGP-M até o dia do efetivo pagamento e acrescido da multa moratória de 10% (dez por cento) e dos juros de 1% (um por cento) ao mês.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Quinta:</h6>
+                        <p>Concordam as partes, que toda transação feita através deste instrumento particular, deverá ser acatada pelos herdeiros e sucessores das partes.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Sexta:</h6>
+                        <p>Que o Locatário ficará responsável pela manutenção e conservação do imóvel alugado, sendo permitida a fiscalização da locadora, desde solicitada com pelo menos 30 dias de antecedência.</p>
+                        
+                        <p><strong>Parágrafo primeiro:</strong> Fica acordado entre as partes que em caso de rescisão contratual, por descumprimento de uma das cláusulas acima avençadas, a parte que der motivo à causa, pagará a título de indenização contratual o valor de 02(dois) meses do aluguel vigente.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Sétima:</h6>
+                        <p>O Locatário declara que o imóvel, ora locado, destina-se única e exclusivamente para o seu uso RESIDENCIAL.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Oitava:</h6>
+                        <p>Ao Locatário recai a responsabilidade por zelar pela conservação, limpeza do imóvel e segurança.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Nona:</h6>
+                        <p>O Locatário está obrigado a devolver o imóvel em perfeitas condições de limpeza, conservação e pintura, quando finda ou rescindida esta avença.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Décima:</h6>
+                        <p>O Locatário não poderá realizar obras que alterem ou modifiquem a estrutura do imóvel locado, sem prévia autorização por escrito da Locadora. No caso de prévia autorização, as obras serão incorporadas ao imóvel, sem que caiba ao locatário qualquer indenização pelas obras ou retenção por benfeitorias.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Décima Primeira:</h6>
+                        <p>A Locadora deve responder pelos vícios ou defeitos anteriores à locação.</p>
+                        
+                        <p><strong>PARÁGRAFO ÚNICO:</strong> O Locatário declara receber o imóvel em perfeito estado de conservação e perfeito funcionamento devendo observar o que consta no termo de vistoria, não respondendo por vícios ocultos ou anteriores à locação.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Décima Segunda:</h6>
+                        <p>Falecendo a LOCADORA, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo o Locatário seguir depositando o valor do aluguel em conta indicada pelo inventariante, após devidamente notificado. Falecendo o Locatário, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo decidir dentro de 30 dias da continuidade ou não da LOCAÇÃO. A locadora deve ser notificada da morte do Locatário e informada de quem será o novo sucessor.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Cláusula Décima Terceira:</h6>
+                        <p>Que as partes elegem o foro da Comarca de {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} para dirimir quaisquer dúvidas referentes ao presente instrumento.</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="fw-bold">Clausula Décima Quarta:</h6>
+                        <p>E por estarem justos e acordados, as partes assinam o presente instrumento em duas vias de igual teor na presença de duas testemunhas, sendo uma via destinada a cada parte.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-4">
+        <p>{{ contrato_locacao.cidade }}, {{ contrato.data_criacao|date:"d" }} de {{ contrato.data_criacao|date:"F" }} de {{ contrato.data_criacao|date:"Y" }}.</p>
+        
+        <div class="row mt-5">
+            <div class="col-md-6 mb-4">
+                <div class="border-top border-dark mx-auto" style="width: 70%"></div>
+                <p class="mt-2">{{ contrato_locacao.nome_locador }}<br>(Locadora)</p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="border-top border-dark mx-auto" style="width: 70%"></div>
+                <p class="mt-2">{{ contrato_locacao.nome_locatario }}<br>(Locatário)</p>
+            </div>
+        </div>
+        
+        <div class="row mt-3">
+            <div class="col-12 mb-2">
+                <p><strong>Testemunhas:</strong></p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="border-top border-dark mx-auto" style="width: 70%"></div>
+                <p class="mt-2">Nome:<br>CPF:</p>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="border-top border-dark mx-auto" style="width: 70%"></div>
+                <p class="mt-2">Nome:<br>CPF:</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

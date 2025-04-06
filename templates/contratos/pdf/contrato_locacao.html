@@ -1,0 +1,164 @@
+<!-- templates/contratos/pdf/contrato_locacao.html -->
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Contrato de Locação</title>
+   <style>
+       @page {
+           size: a4 portrait;
+           margin: 2cm;
+       }
+       body {
+           font-family: Arial, sans-serif;
+           font-size: 12pt;
+           line-height: 1.5;
+           color: #000;
+       }
+       h1 {
+           text-align: center;
+           font-size: 16pt;
+           font-weight: bold;
+           margin-bottom: 20pt;
+       }
+       h2 {
+           text-align: center;
+           font-size: 14pt;
+           margin-bottom: 20pt;
+       }
+       .clausula {
+           margin-bottom: 12pt;
+       }
+       .clausula-titulo {
+           font-weight: bold;
+       }
+       .assinatura {
+           margin-top: 50pt;
+           page-break-inside: avoid;
+       }
+       .assinatura-linha {
+           border-top: 1px solid #000;
+           width: 70%;
+           margin: 40pt auto 5pt auto;
+           text-align: center;
+       }
+       .text-center {
+           text-align: center;
+       }
+       p {
+           margin-bottom: 8pt;
+           text-align: justify;
+       }
+       .page-break {
+           page-break-before: always;
+       }
+   </style>
+</head>
+<body>
+   <h1>INSTRUMENTO PARTICULAR DE CONTRATO DE LOCAÇÃO DE IMÓVEL RESIDENCIAL</h1>
+   
+   <h2>CONTRATO DE LOCAÇÃO DO IMÓVEL {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %} (LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}.</h2>
+   
+   <p>
+       Que fazem entre si, de um lado, doravante denominada <strong>Locadora</strong>, {{ contrato_locacao.nome_locador }}, {{ contrato_locacao.nacionalidade_locador }}, {{ contrato_locacao.estado_civil_locador }}, {{ contrato_locacao.profissao_locador }}, portadora da cédula de identidade de n.° {{ contrato_locacao.rg_locador }} e inscrita no CPF sob o n.° {{ contrato_locacao.cpf_locador }}, residente e domiciliada {{ contrato_locacao.endereco_locador }}. 
+       Do outro lado, doravante denominado <strong>Locatário</strong>, {{ contrato_locacao.nome_locatario }}, {{ contrato_locacao.nacionalidade_locatario }}, portador da carteira de identidade nº {{ contrato_locacao.rg_locatario }}, CPF nº {{ contrato_locacao.cpf_locatario }}, residente e domiciliado no endereço do imóvel objeto deste contrato, têm justo e acordado o que se segue:
+   </p>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Primeira:</span> Que a Locadora é legítima proprietária do imóvel situado na {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %} (LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Segunda:</span> Que a Locadora aluga o referido imóvel pelo prazo de 12 meses, iniciando em {{ contrato_locacao.data_inicio|date:"d/m/Y" }} e terminando em {{ data_fim|date:"d/m/Y" }}, podendo ser prorrogado pelo mesmo período havendo concordância entre as partes.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Terceira:</span> Que a Locadora aluga o imóvel ao Locatário pelo preço certo e ajustado de R$ {{ contrato_locacao.valor_aluguel }} ({{ contrato_locacao.valor_aluguel_extenso }}), a começar a ser pago no dia {{ contrato_locacao.dia_pagamento }} de {{ contrato_locacao.data_inicio|date:"F"|capfirst }} de {{ contrato_locacao.data_inicio|date:"Y" }}, sendo os meses subsequentes a serem pagos também no dia {{ contrato_locacao.dia_pagamento }} de cada mês.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Parágrafo Primeiro:</span> Que o reajuste será anual, de acordo com os índices da Lei em vigência.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Parágrafo Segundo:</span> Fica acertado entre as partes, que o Locatário tomou posse do objeto no dia {{ contrato_locacao.data_inicio|date:"d/m/Y" }}.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Quarta:</span> Fica acertado entre as partes que o pagamento do aluguel será feito diretamente na conta bancária da Locadora ou a conta que ela indicar.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Parágrafo único:</span> Em caso de mora no pagamento do aluguel, o valor será corrigido pelo IGP-M até o dia do efetivo pagamento e acrescido da multa moratória de 10% (dez por cento) e dos juros de 1% (um por cento) ao mês.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Quinta:</span> Concordam as partes, que toda transação feita através deste instrumento particular, deverá ser acatada pelos herdeiros e sucessores das partes.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Sexta:</span> Que o Locatário ficará responsável pela manutenção e conservação do imóvel alugado, sendo permitida a fiscalização da locadora, desde solicitada com pelo menos 30 dias de antecedência.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Parágrafo primeiro:</span> Fica acordado entre as partes que em caso de rescisão contratual, por descumprimento de uma das cláusulas acima avençadas, a parte que der motivo à causa, pagará a título de indenização contratual o valor de 02(dois) meses do aluguel vigente.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Sétima:</span> O Locatário declara que o imóvel, ora locado, destina-se única e exclusivamente para o seu uso RESIDENCIAL.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Oitava:</span> Ao Locatário recai a responsabilidade por zelar pela conservação, limpeza do imóvel e segurança.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Nona:</span> O Locatário está obrigado a devolver o imóvel em perfeitas condições de limpeza, conservação e pintura, quando finda ou rescindida esta avença.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Décima:</span> O Locatário não poderá realizar obras que alterem ou modifiquem a estrutura do imóvel locado, sem prévia autorização por escrito da Locadora. No caso de prévia autorização, as obras serão incorporadas ao imóvel, sem que caiba ao locatário qualquer indenização pelas obras ou retenção por benfeitorias.
+   </div>
+   
+   <div class="clausula page-break">
+       <span class="clausula-titulo">Cláusula Décima Primeira:</span> A Locadora deve responder pelos vícios ou defeitos anteriores à locação.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">PARÁGRAFO ÚNICO:</span> O Locatário declara receber o imóvel em perfeito estado de conservação e perfeito funcionamento devendo observar o que consta no termo de vistoria, não respondendo por vícios ocultos ou anteriores à locação.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Décima Segunda:</span> Falecendo a LOCADORA, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo o Locatário seguir depositando o valor do aluguel em conta indicada pelo inventariante, após devidamente notificado. Falecendo o Locatário, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo decidir dentro de 30 dias da continuidade ou não da LOCAÇÃO. A locadora deve ser notificada da morte do Locatário e informada de quem será o novo sucessor.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Cláusula Décima Terceira:</span> Que as partes elegem o foro da Comarca de {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} para dirimir quaisquer dúvidas referentes ao presente instrumento.
+   </div>
+   
+   <div class="clausula">
+       <span class="clausula-titulo">Clausula Décima Quarta:</span> E por estarem justos e acordados, as partes assinam o presente instrumento em duas vias de igual teor na presença de duas testemunhas, sendo uma via destinada a cada parte.
+   </div>
+   
+   <p class="text-center">{{ contrato_locacao.cidade }}, {{ data_atual|date:"d" }} de {{ data_atual|date:"F"|capfirst }} de {{ data_atual|date:"Y" }}.</p>
+   
+   <div class="assinatura">
+       <div class="assinatura-linha">(Locadora)</div>
+       <p class="text-center">{{ contrato_locacao.nome_locador }}</p>
+   </div>
+   
+   <div class="assinatura">
+       <div class="assinatura-linha">(Locatário)</div>
+       <p class="text-center">{{ contrato_locacao.nome_locatario }}</p>
+   </div>
+   
+   <div class="assinatura">
+       <p class="text-center">Testemunhas:</p>
+       <div class="assinatura-linha"></div>
+       <p class="text-center">Nome:<br>CPF:</p>
+       
+       <div class="assinatura-linha"></div>
+       <p class="text-center">Nome:<br>CPF:</p>
+   </div>
+</body>
+</html>

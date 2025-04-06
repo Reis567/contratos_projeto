@@ -1,0 +1,313 @@
+<!-- templates/contratos/editar_contrato_locacao.html -->
+{% extends 'base.html' %}
+
+{% block title %}Editar Contrato de Locação{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-semibold mb-0 d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            Editar Contrato de Locação
+        </h4>
+    </div>
+    <div class="card-body p-4">
+        <p class="text-muted mb-4">
+            Edite as informações do contrato conforme necessário. Os campos marcados com <span class="text-danger">*</span> são obrigatórios.
+        </p>
+        
+        <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            
+            <!-- Seção do Locador -->
+            <div class="card mb-4 border-0" style="background-color: var(--light-bg);">
+                <div class="card-body p-4">
+                    <h5 class="fw-semibold mb-4 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        Dados do Locador (Proprietário)
+                    </h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.nome_locador.id_for_label }}" class="form-label">Nome do Locador <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.nome_locador.html_name }}" id="{{ form.nome_locador.id_for_label }}" class="form-control" value="{{ form.nome_locador.value|default:'' }}" required>
+                            {% if form.nome_locador.errors %}
+                                <div class="invalid-feedback d-block">{{ form.nome_locador.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.profissao_locador.id_for_label }}" class="form-label">Profissão</label>
+                            <input type="text" name="{{ form.profissao_locador.html_name }}" id="{{ form.profissao_locador.id_for_label }}" class="form-control" value="{{ form.profissao_locador.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.nacionalidade_locador.id_for_label }}" class="form-label">Nacionalidade</label>
+                            <input type="text" name="{{ form.nacionalidade_locador.html_name }}" id="{{ form.nacionalidade_locador.id_for_label }}" class="form-control" value="{{ form.nacionalidade_locador.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.estado_civil_locador.id_for_label }}" class="form-label">Estado Civil</label>
+                            <input type="text" name="{{ form.estado_civil_locador.html_name }}" id="{{ form.estado_civil_locador.id_for_label }}" class="form-control" value="{{ form.estado_civil_locador.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.endereco_locador.id_for_label }}" class="form-label">Endereço</label>
+                            <input type="text" name="{{ form.endereco_locador.html_name }}" id="{{ form.endereco_locador.id_for_label }}" class="form-control" value="{{ form.endereco_locador.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.rg_locador.id_for_label }}" class="form-label">RG <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.rg_locador.html_name }}" id="{{ form.rg_locador.id_for_label }}" class="form-control" value="{{ form.rg_locador.value|default:'' }}" required>
+                            {% if form.rg_locador.errors %}
+                                <div class="invalid-feedback d-block">{{ form.rg_locador.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.cpf_locador.id_for_label }}" class="form-label">CPF <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.cpf_locador.html_name }}" id="{{ form.cpf_locador.id_for_label }}" class="form-control" data-mask="000.000.000-00" value="{{ form.cpf_locador.value|default:'' }}" required>
+                            {% if form.cpf_locador.errors %}
+                                <div class="invalid-feedback d-block">{{ form.cpf_locador.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção do Locatário -->
+            <div class="card mb-4 border-0" style="background-color: var(--light-bg);">
+                <div class="card-body p-4">
+                    <h5 class="fw-semibold mb-4 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Dados do Locatário (Inquilino)
+                    </h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.nome_locatario.id_for_label }}" class="form-label">Nome do Locatário <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.nome_locatario.html_name }}" id="{{ form.nome_locatario.id_for_label }}" class="form-control" value="{{ form.nome_locatario.value|default:'' }}" required>
+                            {% if form.nome_locatario.errors %}
+                                <div class="invalid-feedback d-block">{{ form.nome_locatario.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.nacionalidade_locatario.id_for_label }}" class="form-label">Nacionalidade</label>
+                            <input type="text" name="{{ form.nacionalidade_locatario.html_name }}" id="{{ form.nacionalidade_locatario.id_for_label }}" class="form-control" value="{{ form.nacionalidade_locatario.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.rg_locatario.id_for_label }}" class="form-label">RG <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.rg_locatario.html_name }}" id="{{ form.rg_locatario.id_for_label }}" class="form-control" value="{{ form.rg_locatario.value|default:'' }}" required>
+                            {% if form.rg_locatario.errors %}
+                                <div class="invalid-feedback d-block">{{ form.rg_locatario.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="{{ form.cpf_locatario.id_for_label }}" class="form-label">CPF <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.cpf_locatario.html_name }}" id="{{ form.cpf_locatario.id_for_label }}" class="form-control" data-mask="000.000.000-00" value="{{ form.cpf_locatario.value|default:'' }}" required>
+                            {% if form.cpf_locatario.errors %}
+                                <div class="invalid-feedback d-block">{{ form.cpf_locatario.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção do Imóvel -->
+            <div class="card mb-4 border-0" style="background-color: var(--light-bg);">
+                <div class="card-body p-4">
+                    <h5 class="fw-semibold mb-4 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Dados do Imóvel
+                    </h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="{{ form.logradouro.id_for_label }}" class="form-label">Logradouro <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.logradouro.html_name }}" id="{{ form.logradouro.id_for_label }}" class="form-control" value="{{ form.logradouro.value|default:'' }}" required>
+                            {% if form.logradouro.errors %}
+                                <div class="invalid-feedback d-block">{{ form.logradouro.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label for="{{ form.numero.id_for_label }}" class="form-label">Número <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.numero.html_name }}" id="{{ form.numero.id_for_label }}" class="form-control" value="{{ form.numero.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.complemento.id_for_label }}" class="form-label">Complemento</label>
+                            <input type="text" name="{{ form.complemento.html_name }}" id="{{ form.complemento.id_for_label }}" class="form-control" value="{{ form.complemento.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.lote.id_for_label }}" class="form-label">Lote <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.lote.html_name }}" id="{{ form.lote.id_for_label }}" class="form-control" value="{{ form.lote.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.quadra.id_for_label }}" class="form-label">Quadra</label>
+                            <input type="text" name="{{ form.quadra.html_name }}" id="{{ form.quadra.id_for_label }}" class="form-control" value="{{ form.quadra.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.casa.id_for_label }}" class="form-label">Casa</label>
+                            <input type="text" name="{{ form.casa.html_name }}" id="{{ form.casa.id_for_label }}" class="form-control" value="{{ form.casa.value|default:'' }}">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.bairro.id_for_label }}" class="form-label">Bairro <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.bairro.html_name }}" id="{{ form.bairro.id_for_label }}" class="form-control" value="{{ form.bairro.value|default:'' }}" required>
+                            {% if form.bairro.errors %}
+                                <div class="invalid-feedback d-block">{{ form.bairro.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.cidade.id_for_label }}" class="form-label">Cidade <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.cidade.html_name }}" id="{{ form.cidade.id_for_label }}" class="form-control" value="{{ form.cidade.value|default:'' }}" required>
+                            {% if form.cidade.errors %}
+                                <div class="invalid-feedback d-block">{{ form.cidade.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label for="{{ form.estado.id_for_label }}" class="form-label">Estado <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.estado.html_name }}" id="{{ form.estado.id_for_label }}" class="form-control" value="{{ form.estado.value|default:'' }}" required>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label for="{{ form.cep.id_for_label }}" class="form-label">CEP <span class="text-danger">*</span></label>
+                            <input type="text" name="{{ form.cep.html_name }}" id="{{ form.cep.id_for_label }}" class="form-control" data-mask="00000-000" value="{{ form.cep.value|default:'' }}" required>
+                            {% if form.cep.errors %}
+                                <div class="invalid-feedback d-block">{{ form.cep.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seção das Condições do Contrato -->
+            <div class="card mb-4 border-0" style="background-color: var(--light-bg);">
+                <div class="card-body p-4">
+                    <h5 class="fw-semibold mb-4 d-flex align-items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Condições do Contrato
+                    </h5>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="{{ form.valor_aluguel.id_for_label }}" class="form-label">Valor do Aluguel (R$) <span class="text-danger">*</span></label>
+                            <input type="number" step="0.01" name="{{ form.valor_aluguel.html_name }}" id="{{ form.valor_aluguel.id_for_label }}" class="form-control" value="{{ form.valor_aluguel.value|default:'' }}" required>
+                            {% if form.valor_aluguel.errors %}
+                                <div class="invalid-feedback d-block">{{ form.valor_aluguel.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.data_inicio.id_for_label }}" class="form-label">Data de Início <span class="text-danger">*</span></label>
+                            <input type="date" name="{{ form.data_inicio.html_name }}" id="{{ form.data_inicio.id_for_label }}" class="form-control" value="{{ form.data_inicio.value|date:'Y-m-d'|default:'' }}" required>
+                            {% if form.data_inicio.errors %}
+                                <div class="invalid-feedback d-block">{{ form.data_inicio.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="{{ form.dia_pagamento.id_for_label }}" class="form-label">Dia do Pagamento <span class="text-danger">*</span></label>
+                            <input type="number" min="1" max="31" name="{{ form.dia_pagamento.html_name }}" id="{{ form.dia_pagamento.id_for_label }}" class="form-control" value="{{ form.dia_pagamento.value|default:'' }}" required>
+                            {% if form.dia_pagamento.errors %}
+                                <div class="invalid-feedback d-block">{{ form.dia_pagamento.errors }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert mb-4" style="background-color: rgba(245, 158, 11, 0.1); color: var(--warning-color); border: none; border-radius: 0.5rem;">
+                <div class="d-flex">
+                    <div class="me-3">
+                        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 class="alert-heading fw-semibold mb-1">Atenção</h6>
+                        <p class="mb-0">Alterações neste contrato não afetarão contratos já assinados ou PDFs já gerados.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'visualizar_contrato' contrato.id %}" class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-save me-2"></i>Salvar Alterações
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // Aplicar máscaras nos campos
+        $('[data-mask="000.000.000-00"]').mask('000.000.000-00');
+        $('[data-mask="00000-000"]').mask('00000-000');
+        
+        // Validação do formulário
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+        
+        // Consulta de CEP
+        $('#{{ form.cep.id_for_label }}').on('blur', function() {
+            let cep = $(this).val().replace(/\D/g, '');
+            if (cep.length === 8) {
+                $.getJSON(`https://viacep.com.br/ws/${cep}/json/`, function(data) {
+                    if (!data.erro) {
+                        $('#{{ form.logradouro.id_for_label }}').val(data.logradouro);
+                        $('#{{ form.bairro.id_for_label }}').val(data.bairro);
+                        $('#{{ form.cidade.id_for_label }}').val(data.localidade);
+                        $('#{{ form.estado.id_for_label }}').val(data.uf);
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

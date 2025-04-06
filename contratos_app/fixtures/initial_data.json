@@ -1,0 +1,11 @@
+[
+  {
+    "model": "contratos_app.tipocontrato",
+    "pk": 1,
+    "fields": {
+      "nome": "Contrato de Locação Residencial",
+      "descricao": "Contrato para locação de imóveis residenciais conforme a legislação vigente.",
+      "template_pdf": "contratos/pdf/contrato_locacao.html"
+    }
+  }
+]

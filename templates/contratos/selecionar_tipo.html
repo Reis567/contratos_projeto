@@ -1,0 +1,113 @@
+<!-- templates/contratos/selecionar_tipo.html -->
+{% extends 'base.html' %}
+
+{% block title %}Selecionar Tipo de Contrato{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4 class="fw-semibold mb-0 d-flex align-items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M9 9h.01" />
+                <path d="M15 9h.01" />
+                <path d="M9 15h.01" />
+                <path d="M15 15h.01" />
+            </svg>
+            Selecionar Tipo de Contrato
+        </h4>
+    </div>
+    <div class="card-body p-4">
+        <p class="text-muted mb-4">Escolha o tipo de contrato que deseja criar. Cada tipo possui um conjunto específico de campos e cláusulas.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="row g-4">
+                {% for radio in form.tipo %}
+                <div class="col-md-6">
+                    <div class="card h-100 {% if forloop.first %}border-2{% else %}border{% endif %}" 
+                         style="{% if forloop.first %}border-color: var(--primary-color) !important;{% else %}border-color: var(--border-color);{% endif %} transition: all 0.2s ease;">
+                        <div class="card-header {% if forloop.first %}text-white{% endif %}" 
+                             style="{% if forloop.first %}background-color: var(--primary-color);{% else %}background-color: var(--light-bg);{% endif %}">
+                            <div class="form-check d-flex align-items-center">
+                                {{ radio.tag }}
+                                <label class="form-check-label ms-2 fw-medium" for="{{ radio.id_for_label }}">
+                                    {{ radio.choice_label }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                {% with tipo=radio.choice_value|stringformat:"i"|add:"0"|add:"-0" %}
+                                    {{ form.tipo.field.queryset.get.descricao }}
+                                {% endwith %}
+                            </p>
+                            <div class="mt-3">
+                                {% if forloop.first %}
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge rounded-pill" style="background-color: rgba(79, 70, 229, 0.1); color: var(--primary-color);">
+                                            <i class="bi bi-star-fill me-1 small"></i>Recomendado
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="d-flex justify-content-between mt-4 pt-2">
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
+                    <i class="bi bi-arrow-left me-2"></i>Voltar
+                </a>
+                <button type="submit" class="btn btn-primary px-4">
+                    <i class="bi bi-check-lg me-2"></i>Continuar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Script para melhorar a experiência de seleção de tipo
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeCards = document.querySelectorAll('.card');
+        const radioInputs = document.querySelectorAll('input[type="radio"]');
+        
+        // Função para aplicar o estilo de seleção
+        function updateCardStyles() {
+            typeCards.forEach((card, index) => {
+                const radio = radioInputs[index];
+                
+                if (radio.checked) {
+                    card.style.borderColor = 'var(--primary-color)';
+                    card.style.borderWidth = '2px';
+                    card.style.boxShadow = 'var(--shadow-md)';
+                } else {
+                    card.style.borderColor = 'var(--border-color)';
+                    card.style.borderWidth = '1px';
+                    card.style.boxShadow = 'var(--shadow-sm)';
+                }
+            });
+        }
+        
+        // Inicializar estilos
+        updateCardStyles();
+        
+        // Adicionar evento de clique nos cards
+        typeCards.forEach((card, index) => {
+            card.addEventListener('click', function() {
+                radioInputs[index].checked = true;
+                updateCardStyles();
+            });
+        });
+        
+        // Atualizar estilos quando o rádio muda
+        radioInputs.forEach(radio => {
+            radio.addEventListener('change', updateCardStyles);
+        });
+    });
+</script>
+{% endblock %}
