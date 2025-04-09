@@ -11,36 +11,55 @@
        }
        body {
            font-family: Arial, sans-serif;
-           font-size: 12pt;
-           line-height: 1.5;
+           font-size: 11pt;
+           line-height: 1.4;
            color: #000;
+           margin: 0;
+           padding: 0;
        }
        h1 {
            text-align: center;
-           font-size: 16pt;
+           font-size: 14pt;
            font-weight: bold;
-           margin-bottom: 20pt;
+           margin: 0 0 15pt 0;
        }
        h2 {
            text-align: center;
-           font-size: 14pt;
-           margin-bottom: 20pt;
+           font-size: 12pt;
+           margin: 0 0 20pt 0;
        }
        .clausula {
-           margin-bottom: 12pt;
+           margin-bottom: 10pt;
+           text-align: justify;
        }
        .clausula-titulo {
            font-weight: bold;
        }
        .assinatura {
-           margin-top: 50pt;
-           page-break-inside: avoid;
+           margin-bottom: 25pt;
+           text-align: center;
        }
        .assinatura-linha {
            border-top: 1px solid #000;
-           width: 70%;
-           margin: 40pt auto 5pt auto;
+           width: 80%;
+           margin: 30pt auto 3pt auto;
+       }
+       .assinatura-nome {
            text-align: center;
+           margin: 0;
+           font-size: 10pt;
+       }
+       .assinatura-documento {
+           text-align: center;
+           margin: 0;
+           font-size: 9pt;
+           color: #444;
+       }
+       .assinatura-cargo {
+           text-align: center;
+           margin: 3pt 0 0 0;
+           font-size: 9pt;
+           font-weight: bold;
        }
        .text-center {
            text-align: center;
@@ -52,6 +71,21 @@
        .page-break {
            page-break-before: always;
        }
+       .local-data {
+           margin: 30pt 0;
+           text-align: center;
+       }
+       .testemunha {
+           width: 45%;
+           margin: 0 auto;
+           text-align: center;
+       }
+       .footer {
+           text-align: center;
+           font-size: 9pt;
+           margin-top: 30pt;
+           color: #666;
+       }
    </style>
 </head>
 <body>
@@ -60,20 +94,20 @@
    <h2>CONTRATO DE LOCAÇÃO DO IMÓVEL {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %} (LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}.</h2>
    
    <p>
-       Que fazem entre si, de um lado, doravante denominada <strong>Locadora</strong>, {{ contrato_locacao.nome_locador }}, {{ contrato_locacao.nacionalidade_locador }}, {{ contrato_locacao.estado_civil_locador }}, {{ contrato_locacao.profissao_locador }}, portadora da cédula de identidade de n.° {{ contrato_locacao.rg_locador }} e inscrita no CPF sob o n.° {{ contrato_locacao.cpf_locador }}, residente e domiciliada {{ contrato_locacao.endereco_locador }}. 
-       Do outro lado, doravante denominado <strong>Locatário</strong>, {{ contrato_locacao.nome_locatario }}, {{ contrato_locacao.nacionalidade_locatario }}, portador da carteira de identidade nº {{ contrato_locacao.rg_locatario }}, CPF nº {{ contrato_locacao.cpf_locatario }}, residente e domiciliado no endereço do imóvel objeto deste contrato, têm justo e acordado o que se segue:
+       Que fazem entre si, de um lado, doravante denominada <strong>LOCADORA</strong>, {{ contrato_locacao.nome_locador }}, {{ contrato_locacao.nacionalidade_locador }}, {{ contrato_locacao.estado_civil_locador }}, {{ contrato_locacao.profissao_locador }}, portador(a) da cédula de identidade de n.° {{ contrato_locacao.rg_locador }} e inscrito(a) no CPF sob o n.° {{ contrato_locacao.cpf_locador }}, residente e domiciliado(a) {{ contrato_locacao.endereco_locador }}. 
+       Do outro lado, doravante denominado <strong>LOCATÁRIO(A)</strong>, {{ contrato_locacao.nome_locatario }}, {{ contrato_locacao.nacionalidade_locatario }}, portador(a) da carteira de identidade nº {{ contrato_locacao.rg_locatario }}, CPF nº {{ contrato_locacao.cpf_locatario }}, residente e domiciliado(a) no endereço do imóvel objeto deste contrato, têm justo e acordado o que se segue:
    </p>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Primeira:</span> Que a Locadora é legítima proprietária do imóvel situado na {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %} (LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}.
+       <span class="clausula-titulo">Cláusula Primeira:</span> Que a LOCADORA é legítima proprietária do imóvel situado na {{ contrato_locacao.logradouro }}, {{ contrato_locacao.numero }}{% if contrato_locacao.complemento %}, {{ contrato_locacao.complemento }}{% endif %} (LOT. {{ contrato_locacao.lote }}{% if contrato_locacao.quadra %}, QD {{ contrato_locacao.quadra }}{% endif %}{% if contrato_locacao.casa %}, CASA {{ contrato_locacao.casa }}{% endif %}), {{ contrato_locacao.bairro }}, {{ contrato_locacao.cidade }}/{{ contrato_locacao.estado }} – CEP: {{ contrato_locacao.cep }}.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Segunda:</span> Que a Locadora aluga o referido imóvel pelo prazo de 12 meses, iniciando em {{ contrato_locacao.data_inicio|date:"d/m/Y" }} e terminando em {{ data_fim|date:"d/m/Y" }}, podendo ser prorrogado pelo mesmo período havendo concordância entre as partes.
+       <span class="clausula-titulo">Cláusula Segunda:</span> Que a LOCADORA aluga o referido imóvel pelo prazo de 12 meses, iniciando em {{ contrato_locacao.data_inicio|date:"d/m/Y" }} e terminando em {{ data_fim|date:"d/m/Y" }}, podendo ser prorrogado pelo mesmo período havendo concordância entre as partes.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Terceira:</span> Que a Locadora aluga o imóvel ao Locatário pelo preço certo e ajustado de R$ {{ contrato_locacao.valor_aluguel }} ({{ contrato_locacao.valor_aluguel_extenso }}), a começar a ser pago no dia {{ contrato_locacao.dia_pagamento }} de {{ contrato_locacao.data_inicio|date:"F"|capfirst }} de {{ contrato_locacao.data_inicio|date:"Y" }}, sendo os meses subsequentes a serem pagos também no dia {{ contrato_locacao.dia_pagamento }} de cada mês.
+       <span class="clausula-titulo">Cláusula Terceira:</span> Que a LOCADORA aluga o imóvel ao LOCATÁRIO pelo preço certo e ajustado de R$ {{ contrato_locacao.valor_aluguel }} ({{ contrato_locacao.valor_aluguel_extenso }}), a começar a ser pago no dia {{ contrato_locacao.dia_pagamento }} de {{ contrato_locacao.data_inicio|date:"F"|capfirst }} de {{ contrato_locacao.data_inicio|date:"Y" }}, sendo os meses subsequentes a serem pagos também no dia {{ contrato_locacao.dia_pagamento }} de cada mês.
    </div>
    
    <div class="clausula">
@@ -81,11 +115,11 @@
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Parágrafo Segundo:</span> Fica acertado entre as partes, que o Locatário tomou posse do objeto no dia {{ contrato_locacao.data_inicio|date:"d/m/Y" }}.
+       <span class="clausula-titulo">Parágrafo Segundo:</span> Fica acertado entre as partes, que o LOCATÁRIO tomou posse do objeto no dia {{ contrato_locacao.data_inicio|date:"d/m/Y" }}.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Quarta:</span> Fica acertado entre as partes que o pagamento do aluguel será feito diretamente na conta bancária da Locadora ou a conta que ela indicar.
+       <span class="clausula-titulo">Cláusula Quarta:</span> Fica acertado entre as partes que o pagamento do aluguel será feito diretamente na conta bancária da LOCADORA ou a conta que ela indicar.
    </div>
    
    <div class="clausula">
@@ -97,7 +131,7 @@
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Sexta:</span> Que o Locatário ficará responsável pela manutenção e conservação do imóvel alugado, sendo permitida a fiscalização da locadora, desde solicitada com pelo menos 30 dias de antecedência.
+       <span class="clausula-titulo">Cláusula Sexta:</span> Que o LOCATÁRIO ficará responsável pela manutenção e conservação do imóvel alugado, sendo permitida a fiscalização da LOCADORA, desde solicitada com pelo menos 30 dias de antecedência.
    </div>
    
    <div class="clausula">
@@ -105,31 +139,29 @@
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Sétima:</span> O Locatário declara que o imóvel, ora locado, destina-se única e exclusivamente para o seu uso RESIDENCIAL.
+       <span class="clausula-titulo">Cláusula Sétima:</span> O LOCATÁRIO declara que o imóvel, ora locado, destina-se única e exclusivamente para o seu uso RESIDENCIAL.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Oitava:</span> Ao Locatário recai a responsabilidade por zelar pela conservação, limpeza do imóvel e segurança.
+       <span class="clausula-titulo">Cláusula Oitava:</span> Ao LOCATÁRIO recai a responsabilidade por zelar pela conservação, limpeza do imóvel e segurança.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Nona:</span> O Locatário está obrigado a devolver o imóvel em perfeitas condições de limpeza, conservação e pintura, quando finda ou rescindida esta avença.
+       <span class="clausula-titulo">Cláusula Nona:</span> O LOCATÁRIO está obrigado a devolver o imóvel em perfeitas condições de limpeza, conservação e pintura, quando finda ou rescindida esta avença.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Décima:</span> O Locatário não poderá realizar obras que alterem ou modifiquem a estrutura do imóvel locado, sem prévia autorização por escrito da Locadora. No caso de prévia autorização, as obras serão incorporadas ao imóvel, sem que caiba ao locatário qualquer indenização pelas obras ou retenção por benfeitorias.
-   </div>
-   
-   <div class="clausula page-break">
-       <span class="clausula-titulo">Cláusula Décima Primeira:</span> A Locadora deve responder pelos vícios ou defeitos anteriores à locação.
+       <span class="clausula-titulo">Cláusula Décima:</span> O LOCATÁRIO não poderá realizar obras que alterem ou modifiquem a estrutura do imóvel locado, sem prévia autorização por escrito da LOCADORA. No caso de prévia autorização, as obras serão incorporadas ao imóvel, sem que caiba ao locatário qualquer indenização pelas obras ou retenção por benfeitorias.
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">PARÁGRAFO ÚNICO:</span> O Locatário declara receber o imóvel em perfeito estado de conservação e perfeito funcionamento devendo observar o que consta no termo de vistoria, não respondendo por vícios ocultos ou anteriores à locação.
+       <span class="clausula-titulo">Cláusula Décima Primeira:</span> A LOCADORA deve responder pelos vícios ou defeitos anteriores à locação.
+   
+       <p><span class="clausula-titulo">PARÁGRAFO ÚNICO:</span> O LOCATÁRIO declara receber o imóvel em perfeito estado de conservação e perfeito funcionamento devendo observar o que consta no termo de vistoria, não respondendo por vícios ocultos ou anteriores à locação.</p>
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Cláusula Décima Segunda:</span> Falecendo a LOCADORA, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo o Locatário seguir depositando o valor do aluguel em conta indicada pelo inventariante, após devidamente notificado. Falecendo o Locatário, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo decidir dentro de 30 dias da continuidade ou não da LOCAÇÃO. A locadora deve ser notificada da morte do Locatário e informada de quem será o novo sucessor.
+       <span class="clausula-titulo">Cláusula Décima Segunda:</span> Falecendo a LOCADORA, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo o LOCATÁRIO seguir depositando o valor do aluguel em conta indicada pelo inventariante, após devidamente notificado. Falecendo o LOCATÁRIO, ficam os seus sucessores sub-rogados dos direitos do presente contrato, devendo decidir dentro de 30 dias da continuidade ou não da LOCAÇÃO. A LOCADORA deve ser notificada da morte do LOCATÁRIO e informada de quem será o novo sucessor.
    </div>
    
    <div class="clausula">
@@ -137,28 +169,57 @@
    </div>
    
    <div class="clausula">
-       <span class="clausula-titulo">Clausula Décima Quarta:</span> E por estarem justos e acordados, as partes assinam o presente instrumento em duas vias de igual teor na presença de duas testemunhas, sendo uma via destinada a cada parte.
+       <span class="clausula-titulo">Cláusula Décima Quarta:</span> E por estarem justos e acordados, as partes assinam o presente instrumento em duas vias de igual teor na presença de duas testemunhas, sendo uma via destinada a cada parte.
    </div>
    
-   <p class="text-center">{{ contrato_locacao.cidade }}, {{ data_atual|date:"d" }} de {{ data_atual|date:"F"|capfirst }} de {{ data_atual|date:"Y" }}.</p>
-   
-   <div class="assinatura">
-       <div class="assinatura-linha">(Locadora)</div>
-       <p class="text-center">{{ contrato_locacao.nome_locador }}</p>
+   <div class="local-data">
+       {{ contrato_locacao.cidade }}, {{ data_atual|date:"d" }} de {{ data_atual|date:"F"|capfirst }} de {{ data_atual|date:"Y" }}.
    </div>
    
-   <div class="assinatura">
-       <div class="assinatura-linha">(Locatário)</div>
-       <p class="text-center">{{ contrato_locacao.nome_locatario }}</p>
-   </div>
+   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+           <td width="50%" align="center">
+               <div class="assinatura">
+                   <div class="assinatura-linha"></div>
+                   <p class="assinatura-nome">{{ contrato_locacao.nome_locador }}</p>
+                   <p class="assinatura-documento">CPF: {{ contrato_locacao.cpf_locador }}</p>
+                   <p class="assinatura-cargo">LOCADOR(A)</p>
+               </div>
+           </td>
+           <td width="50%" align="center">
+               <div class="assinatura">
+                   <div class="assinatura-linha"></div>
+                   <p class="assinatura-nome">{{ contrato_locacao.nome_locatario }}</p>
+                   <p class="assinatura-documento">CPF: {{ contrato_locacao.cpf_locatario }}</p>
+                   <p class="assinatura-cargo">LOCATÁRIO(A)</p>
+               </div>
+           </td>
+       </tr>
+   </table>
    
-   <div class="assinatura">
-       <p class="text-center">Testemunhas:</p>
-       <div class="assinatura-linha"></div>
-       <p class="text-center">Nome:<br>CPF:</p>
-       
-       <div class="assinatura-linha"></div>
-       <p class="text-center">Nome:<br>CPF:</p>
-   </div>
+   <p>&nbsp;</p>
+   
+   <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+           <td width="50%" align="center">
+               <div class="assinatura">
+                   <div class="assinatura-linha"></div>
+                   <p class="assinatura-nome">Nome: ___________________________</p>
+                   <p class="assinatura-documento">CPF: ___________________________</p>
+                   <p class="assinatura-cargo">1ª TESTEMUNHA</p>
+               </div>
+           </td>
+           <td width="50%" align="center">
+               <div class="assinatura">
+                   <div class="assinatura-linha"></div>
+                   <p class="assinatura-nome">Nome: ___________________________</p>
+                   <p class="assinatura-documento">CPF: ___________________________</p>
+                   <p class="assinatura-cargo">2ª TESTEMUNHA</p>
+               </div>
+           </td>
+       </tr>
+   </table>
+   
+
 </body>
 </html>

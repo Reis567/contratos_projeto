@@ -35,39 +35,57 @@ def selecionar_tipo_contrato(request):
     
     return render(request, 'contratos/selecionar_tipo.html', {'form': form})
 
+
 def criar_contrato_locacao(request):
-    """View para criar um contrato de locação"""
-    # Verificar se o tipo foi selecionado
     tipo_id = request.session.get('tipo_contrato_id')
     if not tipo_id:
         return redirect('selecionar_tipo_contrato')
     
+    tipo_contrato = get_object_or_404(TipoContrato, id=tipo_id)
+    
     if request.method == 'POST':
         form = ContratoLocacaoForm(request.POST)
         if form.is_valid():
-            # Primeiro criamos o contrato base
-            tipo_contrato = get_object_or_404(TipoContrato, id=tipo_id)
-            contrato = Contrato.objects.create(tipo=tipo_contrato)
-            
-            # Depois associamos os detalhes de locação
-            contrato_locacao = form.save(commit=False)
-            contrato_locacao.contrato = contrato
-            
-            # Processar valor por extenso
-            valor = contrato_locacao.valor_aluguel
-            contrato_locacao.valor_aluguel_extenso = num2words(float(valor), lang='pt_BR')
-            
-            contrato_locacao.save()
-            
-            # Limpar a sessão
-            if 'tipo_contrato_id' in request.session:
-                del request.session['tipo_contrato_id']
+            try:
+                # Criamos o contrato base
+                contrato = Contrato.objects.create(tipo=tipo_contrato)
                 
-            return redirect('visualizar_contrato', contrato_id=contrato.id)
+                # Associamos os detalhes de locação
+                contrato_locacao = form.save(commit=False)
+                contrato_locacao.contrato = contrato
+                
+                # Processar valor por extenso (melhorado)
+                valor = contrato_locacao.valor_aluguel
+                valor_inteiro = int(valor)
+                centavos = int((valor - valor_inteiro) * 100)
+                
+                valor_extenso = num2words(valor_inteiro, lang='pt_BR')
+                
+                if centavos > 0:
+                    centavos_extenso = num2words(centavos, lang='pt_BR')
+                    contrato_locacao.valor_aluguel_extenso = f"{valor_extenso} reais e {centavos_extenso} centavos"
+                else:
+                    contrato_locacao.valor_aluguel_extenso = f"{valor_extenso} reais"
+                
+                contrato_locacao.save()
+                
+                # Limpar a sessão
+                if 'tipo_contrato_id' in request.session:
+                    del request.session['tipo_contrato_id']
+                
+                return redirect('visualizar_contrato', contrato_id=contrato.id)
+                
+            except Exception as e:
+                if 'contrato' in locals():
+                    contrato.delete()
     else:
         form = ContratoLocacaoForm()
     
-    return render(request, 'contratos/criar_contrato_locacao.html', {'form': form})
+    return render(request, 'contratos/criar_contrato_locacao.html', {
+        'form': form,
+        'tipo_contrato': tipo_contrato
+    })
+
 def visualizar_contrato(request, contrato_id):
     """View para visualizar um contrato"""
     contrato = get_object_or_404(Contrato, id=contrato_id)
@@ -85,27 +103,78 @@ def visualizar_contrato(request, contrato_id):
     return render(request, template_name, {'contrato': contrato, **contexto_extra})
 
 def render_to_pdf(template_src, context_dict={}):
-    """Função auxiliar para gerar PDF a partir de um template"""
+    """Função auxiliar para gerar PDF a partir de um template com tratamento de erros melhorado"""
     template = get_template(template_src)
     html = template.render(context_dict)
     result = BytesIO()
-    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    
+    # Configuração do pisa com opções mais básicas e compatíveis
+    pdf = pisa.pisaDocument(
+        BytesIO(html.encode("UTF-8")), 
+        result,
+        encoding='UTF-8'
+    )
+    
     if not pdf.err:
         return HttpResponse(result.getvalue(), content_type='application/pdf')
+    
+    # Em caso de erro, imprime detalhes para debug
+    print(f"Erro ao gerar PDF: {pdf.err}")
     return None
 
+def fetch_resources(uri, rel):
+    """
+    Função auxiliar para buscar recursos estáticos como imagens e CSS
+    """
+    from django.conf import settings
+    import os
+    
+    # Busca o recurso no sistema de arquivos
+    path = os.path.join(settings.STATIC_ROOT, uri.replace(settings.STATIC_URL, ""))
+    return path
+
 def gerar_pdf(request, contrato_id):
-    """View para gerar PDF do contrato"""
+    """View melhorada para gerar PDF do contrato"""
     contrato = get_object_or_404(Contrato, id=contrato_id)
     
     # Determinar qual template e contexto usar com base no tipo de contrato
     template_pdf = None
-    contexto = {'contrato': contrato, 'data_atual': timezone.now().date()}
+    contexto = {
+        'contrato': contrato, 
+        'data_atual': timezone.now().date(),
+        'page_size': 'A4',
+    }
     
     if hasattr(contrato, 'contrato_locacao'):
         template_pdf = 'contratos/pdf/contrato_locacao.html'
-        contexto['contrato_locacao'] = contrato.contrato_locacao
-        contexto['data_fim'] = contrato.contrato_locacao.data_fim()
+        contrato_locacao = contrato.contrato_locacao
+        
+        # Calcular a data de fim do contrato
+        data_fim = contrato_locacao.data_fim()
+        
+        # Processar texto por extenso com melhor formatação
+        valor = contrato_locacao.valor_aluguel
+        valor_inteiro = int(valor)
+        centavos = int((valor - valor_inteiro) * 100)
+        
+        valor_extenso = num2words(valor_inteiro, lang='pt_BR')
+        valor_extenso = valor_extenso.replace('e zero', '')  # Formata melhor o texto por extenso
+        
+        if centavos > 0:
+            centavos_extenso = num2words(centavos, lang='pt_BR')
+            valor_aluguel_extenso = f"{valor_extenso} reais e {centavos_extenso} centavos"
+        else:
+            valor_aluguel_extenso = f"{valor_extenso} reais"
+        
+        # Formatar o primeiro caractere em maiúsculo
+        valor_aluguel_extenso = valor_aluguel_extenso[0].upper() + valor_aluguel_extenso[1:]
+        
+        # Atualizar contexto com os dados específicos do contrato de locação
+        contexto.update({
+            'contrato_locacao': contrato_locacao,
+            'data_fim': data_fim,
+            'valor_aluguel_extenso': valor_aluguel_extenso
+        })
     
     # Adicione mais condições para outros tipos de contratos
     
@@ -118,15 +187,26 @@ def gerar_pdf(request, contrato_id):
     if pdf:
         # Configurar cabeçalho para download do arquivo
         response = HttpResponse(pdf, content_type='application/pdf')
+        
+        # Melhorar a nomenclatura do arquivo para evitar problemas com caracteres especiais
         filename = f"contrato_{contrato.id}.pdf"
         if hasattr(contrato, 'contrato_locacao'):
-            filename = f"contrato_locacao_{contrato.contrato_locacao.nome_locatario.replace(' ', '_')}.pdf"
+            # Sanitizar o nome do locatário para evitar problemas no nome do arquivo
+            nome_sanitizado = ''.join(c for c in contrato.contrato_locacao.nome_locatario 
+                                    if c.isalnum() or c in [' ', '_']).strip()
+            nome_sanitizado = nome_sanitizado.replace(' ', '_')
+            filename = f"contrato_locacao_{nome_sanitizado}.pdf"
         
-        content = f"attachment; filename={filename}"
+        # Definir se o arquivo será visualizado no navegador ou baixado
+        if request.GET.get('download', False):
+            content = f"attachment; filename={filename}"
+        else:
+            content = f"inline; filename={filename}"
+            
         response['Content-Disposition'] = content
         return response
     
-    return HttpResponse("Erro ao gerar PDF", status=400)
+    return HttpResponse("Erro ao gerar PDF. Por favor, tente novamente.", status=400)
 
 def editar_contrato(request, contrato_id):
     """View para editar um contrato existente"""
